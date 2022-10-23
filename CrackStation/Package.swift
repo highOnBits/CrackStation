@@ -5,6 +5,12 @@ import PackageDescription
 
 let package = Package(
     name: "CrackStation",
+    platforms: [
+        .iOS(.v12),
+        .tvOS(.v12),
+        .watchOS(.v5),
+        .macOS(.v10_15)
+    ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
@@ -20,7 +26,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
             name: "CrackStation",
-            dependencies: []),
+            dependencies: [],
+            resources: [
+                .process("hashValues.json")]
+        ),
         .testTarget(
             name: "CrackStationTests",
             dependencies: ["CrackStation"]),
