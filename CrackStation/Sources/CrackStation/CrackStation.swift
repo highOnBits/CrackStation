@@ -1,19 +1,33 @@
 import Foundation
 
-public class CrackStation {
-    private var hashValuesDict: [String: String] = [:]
-    
-    public init(){
+public protocol Decrypter {
+    init()
+
+    /// Either returns the cracked plain-text password
+    /// or, if unable to crack, then returns nil.
+    /// - Parameter shaHash: The SHA-1 or SHA-256 digest that corresponds to the encrypted password.
+    /// - Returns: The underlying plain-text password if `shaHash` was successfully cracked. Otherwise returns nil.
+    func decrypt(shaHash: String) -> String?
+}
+
+public class CrackStation : Decrypter {
+    private var hashValuesDictSHA1: [String: String] = [:]
+    private var hashValuesDictSHA256: [String: String] = [:]
+
+    public required init(){
         do{
-            self.hashValuesDict = try loadDictionaryFromDisk()
+            self.hashValuesDictSHA1 = try loadDictionaryFromDisk(fileName: "hashValuesSHA1")
+            self.hashValuesDictSHA256 = try loadDictionaryFromDisk(fileName: "hashValuesSHA256")
         } catch {
             print("Unexpecetd Error Occured. Failed to load hash values.")
         }
     }
     
-    private func loadDictionaryFromDisk() throws -> [String : String] {
+    // Loads the dictionary from a json file present in the disc.
+    // Throws error if fail to load dictionary from json file in the disc.
+    private func loadDictionaryFromDisk(fileName: String) throws -> [String : String] {
         var jsonResult: Any?
-        if let path = Bundle.module.path(forResource: "hashValues", ofType: "json") {
+        if let path = Bundle.module.path(forResource: fileName, ofType: "json") {
             do{
                 let fileUrl = URL(fileURLWithPath: path)
                 let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
@@ -30,15 +44,20 @@ public class CrackStation {
         }
     }
     
-    public func crack(hash: String) -> String {
-        let keyExist = self.hashValuesDict[hash] != nil
+    // Cracks the encrypted password encrypted using SHA-1 and matches the regex [A-Za-z0-9]
+    // Input -> Takes the Encrypted password, Output -> Returns the decrypted character for the password
+    public func decrypt(shaHash: String) -> String? {
+        let keyExistInSHA1 = self.hashValuesDictSHA1[shaHash] != nil
+        let keyExistInSHA256 = self.hashValuesDictSHA256[shaHash] != nil
         
-        if keyExist{
-            return self.hashValuesDict[hash]!
+        if keyExistInSHA1{
+            return self.hashValuesDictSHA1[shaHash]!
         }
-        else{
-            return "Unable to crack the password! Please make sure you have done the installation correctly and input is valid. For installation steps, please refer README file."
+        if keyExistInSHA256{
+            return self.hashValuesDictSHA256[shaHash]!
         }
+        
+        return nil
     }
 }
 
