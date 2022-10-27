@@ -24,7 +24,6 @@ public class CrackStation : Decrypter {
     }
     
     // Loads the dictionary from a json file present in the disc.
-    // Throws error if fail to load dictionary from json file in the disc.
     private func loadDictionaryFromDisk(fileName: String) throws -> [String : String] {
         var jsonResult: Any?
         if let path = Bundle.module.path(forResource: fileName, ofType: "json") {
@@ -44,7 +43,7 @@ public class CrackStation : Decrypter {
         }
     }
     
-    // Cracks the encrypted password encrypted using SHA-1 and matches the regex [A-Za-z0-9]
+    // Cracks the encrypted password encrypted using SHA-1 and SHA-256 and matches the regex [A-Za-z0-9][A-Za-z0-9]
     // Input -> Takes the Encrypted password, Output -> Returns the decrypted character for the password
     public func decrypt(shaHash: String) -> String? {
         let keyExistInSHA1 = self.hashValuesDictSHA1[shaHash] != nil
