@@ -12,7 +12,7 @@ import PackageDescription
 
 let package = Package(
     dependencies: [
-        .Package(url: "git@github.com:highOnBits/Fall22-CS561-Crack-Station.git", majorVersion: from: "2.4.0")
+        .Package(url: "git@github.com:highOnBits/Fall22-CS561-Crack-Station.git", majorVersion: from: "2.5.0")
     ]
 )
 ```
