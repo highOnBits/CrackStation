@@ -31,8 +31,18 @@ Add `CrackStation` dependency under your targets where you want to use the packa
 
 ## Usage Example
 
+How to use the package inside your code
+
 ```swift
 import CrackStation
 let crackStation = CrackStation()
 crackStation.decrypt(shaHash: "<your_password_to_crack>")
+```
+
+The CrackStation class implements a protocol named `Decrypter` which have a method named ```swift public func decrypt(shaHash: String) -> String``` which can be used for wrapping and unwrapping purposes.
+
+```swift
+let decrypter: Decrypter
+decrypter = CrackStation()
+decrypter.decrypt("haHash: "<your_password_to_crack>")
 ```
