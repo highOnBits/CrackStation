@@ -10,6 +10,7 @@ public protocol Decrypter {
     func decrypt(shaHash: String) -> String?
 }
 
+// This class handles the decryption a given password upto 3 characters long encrypted using SHA1 or SHA256
 public class CrackStation : Decrypter {
     private var hashValuesDictSHA1: [String: String] = [:]
     private var hashValuesDictSHA256: [String: String] = [:]
@@ -19,7 +20,7 @@ public class CrackStation : Decrypter {
             self.hashValuesDictSHA1 = try loadDictionaryFromDisk(fileName: "hashValuesSHA1")
             self.hashValuesDictSHA256 = try loadDictionaryFromDisk(fileName: "hashValuesSHA256")
         } catch {
-            print("Unexpecetd Error Occured. Failed to load hash values.")
+            // Do Nothing
         }
     }
     
@@ -44,8 +45,12 @@ public class CrackStation : Decrypter {
     }
     
     // Cracks the encrypted password encrypted using SHA-1 and SHA-256 and matches the regex [A-Za-z0-9][A-Za-z0-9]
-    // Input -> Takes the Encrypted password, Output -> Returns the decrypted character for the password
+    // Input -> Takes the Encrypted password, Output -> Returns the decrypted character combination for the password
     public func decrypt(shaHash: String) -> String? {
+        if shaHash.isEmpty {
+            return nil
+        }
+        
         let keyExistInSHA1 = self.hashValuesDictSHA1[shaHash] != nil
         let keyExistInSHA256 = self.hashValuesDictSHA256[shaHash] != nil
         
