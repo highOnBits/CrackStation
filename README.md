@@ -12,7 +12,7 @@ import PackageDescription
 
 let package = Package(
     dependencies: [
-        .Package(url: "git@github.com:highOnBits/Fall22-CS561-Crack-Station.git", majorVersion: from: "2.5.0")
+        .Package(url: "git@github.com:highOnBits/Fall22-CS561-Crack-Station.git", majorVersion: from: "2.4.0")
     ]
 )
 ```
@@ -39,7 +39,7 @@ let crackStation = CrackStation()
 crackStation.decrypt(shaHash: "<your_password_to_crack>")
 ```
 
-The CrackStation class implements a protocol named `Decrypter` which have a method named ```swift public func decrypt(shaHash: String) -> String``` which can be used for wrapping and unwrapping purposes.
+The CrackStation class implements a protocol named `Decrypter`, which contains a method named ```public func decrypt(shaHash: String) -> String```. This can be used for wrapping and unwrapping purposes.
 
 ```swift
 let decrypter: Decrypter
