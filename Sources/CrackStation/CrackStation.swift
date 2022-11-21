@@ -32,18 +32,11 @@ public class CrackStation : Decrypter {
     
     /// Loads the dictionary from a json file present in the disc.
     private static func loadDictionaryFromDisk(fileName: String) throws -> [String : String] {
-        var jsonResult: Any?
-        if let path = Bundle.module.path(forResource: fileName, ofType: "json") {
-            do{
-                let fileUrl = URL(fileURLWithPath: path)
-                let data = try Data(contentsOf: fileUrl, options: .mappedIfSafe)
-                jsonResult = try JSONSerialization.jsonObject(with: data)
-            } catch {
-                assertionFailure("Failed to read from hash values JSON file.")
-                return [:]
-            }
-        }
+        guard let path = Bundle.module.url(forResource: fileName, withExtension: "json") else { return [:] }
         
+        let data = try Data(contentsOf: path)
+        let jsonResult = try JSONSerialization.jsonObject(with: data)
+    
         if let lookupTable: Dictionary = jsonResult as? Dictionary<String, String> {
             return lookupTable
         } else {

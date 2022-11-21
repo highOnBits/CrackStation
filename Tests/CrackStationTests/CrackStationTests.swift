@@ -73,4 +73,59 @@ final class CrackStationTests: XCTestCase {
         // Then
         XCTAssertEqual(crackedPW, nil)
     }
+    
+    func testCrackStation_threeCharactersCombinations_sha1() {
+        let crackStation = CrackStation()
+        let hashValueToDecrypt = "c225ebaf44426ff4b948536e095f9db2b6d91bda" // Hash Value for 'A3!'
+        
+        // When
+        let crackedPW = crackStation.decrypt(shaHash: hashValueToDecrypt)
+        
+        // Then
+        XCTAssertEqual(crackedPW, "A3!")
+    }
+    
+    func testCrackStation_threeCharactersCombinations_sh1() {
+        let crackStation = CrackStation()
+        let hashValueToDecrypt = "56073cbd03491e7b2588c7c1fcc9e55b6374ebb5" // Hash Value for '?aZ'
+        
+        // When
+        let crackedPW = crackStation.decrypt(shaHash: hashValueToDecrypt)
+        
+        // Then
+        XCTAssertEqual(crackedPW, "?aZ")
+    }
+    
+    func testCrackStation_threeCharactersCombinations_sha256() {
+        let crackStation = CrackStation()
+        let hashValueToDecrypt = "dbf9b6564530bf7e0096dfd806e121dd645c0bb1d7d063f5f0e39d096601aee6" // Hash Value for 'A3!'
+        
+        // When
+        let crackedPW = crackStation.decrypt(shaHash: hashValueToDecrypt)
+        
+        // Then
+        XCTAssertEqual(crackedPW, "A3!")
+    }
+    
+    func testCrackStation_threeCharactersCombinations_sh256() {
+        let crackStation = CrackStation()
+        let hashValueToDecrypt = "6e8528bad036695a9fac1112780cb11d2664d4bc882652e833cd026a5e84f164" // Hash Value for '?aZ'
+        
+        // When
+        let crackedPW = crackStation.decrypt(shaHash: hashValueToDecrypt)
+        
+        // Then
+        XCTAssertEqual(crackedPW, "?aZ")
+    }
+    
+    func testCrackStation_invalid_fiveCharactersCombinations() {
+        let crackStation = CrackStation()
+        let hashValueToDecrypt = "7b5473255b1b3fef37b80be3c87270a856897211bd56d0798e919087b793cc14" // Hash Value for '?aZq!'
+        
+        // When
+        let crackedPW = crackStation.decrypt(shaHash: hashValueToDecrypt)
+        
+        // Then
+        XCTAssertEqual(crackedPW, nil)
+    }
 }
